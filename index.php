@@ -8,7 +8,8 @@
     $conf = new Config();
     $db = new Database($conf);
     $userModel = new UserModel($db);
-    $authController = new Authentication($db,$userModel);
+    // $db->connect();
+    $authController = new Authentication($userModel);
     $authController->mvcHandler();
     
 

@@ -56,7 +56,7 @@
 <body>
 
 <h2>Register</h2>
-<form action="register_process.php" method="post">
+<form action="../index.php?authRoute=register" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required pattern="[a-zA-Z0-9]+" title="Alphanumeric characters only"><br>
 
