@@ -14,40 +14,6 @@ class PlayerModel
         $this->pass = $conf->pass;
         $this->db = $conf->db;
     }
-    public function checkAndInserter(): void
-    {
-        $this->connect();
-        $sql = "SELECT 1 FROM football_player LIMIT 1";
-        try {
-            $this->condb->exec($sql);
-        } catch (PDOException $e) {
-            // create table
-            $sql = "CREATE TABLE football_player (
-                identifier INT(6) UNSIGNED  PRIMARY KEY,
-                firstname VARCHAR(30) NOT NULL,
-                lastname VARCHAR(30) NOT NULL,
-                team VARCHAR(50)  NOT NULL,
-                position VARCHAR(50)  NOT NULL, 
-                image_url VARCHAR(250)  NOT NULL );";
-            $this->condb->exec($sql);
-            // add data form json
-            $json = json_decode(file_get_contents(__DIR__ . '/playerlist.json'));
-            for ($i = 0; $i < count($json); $i++) {
-                $_sql = "";
-                $identifier = $json[$i]->identifier;
-                $first_name = $json[$i]->first_name;
-                $last_name = $json[$i]->last_name;
-                $team = $json[$i]->team;
-                $position = $json[$i]->position;
-                $image = $json[$i]->image;
-                $_sql = "INSERT INTO `football_player` (`identifier`, `firstname`, `lastname`, `team`, `position`, `image_url`) VALUES( ?,?,?,?,?,? );";
-                $query = $this->condb->prepare($_sql);
-                $query->execute([$identifier, $first_name, $last_name, $team, $position, $image]);
-
-            }
-
-        }
-    }
     public function connect(): void
     {
         try {

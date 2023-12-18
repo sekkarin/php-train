@@ -7,10 +7,10 @@ class Config
 	public $pass;
 	public $db;
 	function __construct() {
-		$this->host = "mariadb";
+		$this->host = "localhost";
 		$this->user  = "root";
-		$this->pass = "123456";
-		$this->db = "players";
+		$this->pass = "";
+		$this->db = "sport";
 	}
 }
 
