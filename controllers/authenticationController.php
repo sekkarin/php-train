@@ -6,11 +6,13 @@
         function __construct($userModel){
             $this->userModel = $userModel;    
         }
+
         public function pageRedirect($url)
         {
           header("location:" . $url);
           exit(0);
         }
+
         public function login()
         {
            
@@ -74,7 +76,7 @@
                      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             
                      // Insert user data into the database
-                     $userModel->registerUser($username, $email, $hashedPassword);
+                     $this->userModel->registerUser($username, $email, $hashedPassword);
 
                     // Check if the username or email is already registered
                     // if ($userModel->isUsernameTaken($username)) {

@@ -34,16 +34,16 @@ class UserModel
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         
-
+        $db->close_db();
         return $row['count'] > 0;
     }
     public function registerUser($username, $email, $hashedPassword)
     {
-        $db->connect();
+        $this->db->connect();
         $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sss", $username, $email, $hashedPassword);
-
+        $this->db->close_db();
         if ($stmt->execute()) {
             return true; // Registration successful
         } else {
