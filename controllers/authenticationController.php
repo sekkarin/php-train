@@ -1,30 +1,43 @@
 <?php
-    include("Database.php");
-    class Authentication{
-        
-        private  $condb;
 
+    class Authentication{  
+        private  $condb;
         private $userModel;
+
         function __construct($db,$userModel){
             $this->condb = $db;
             $this->userModel = $userModel;
             
         }
-
-        public function login($username, $password)
+        public function pageRedirect($url)
         {
+          header("location:" . $url);
+          exit(0);
+        }
+        public function login()
+        {
+           
             $user = $this->userModel->getUserByUsername($username);
+            try {
+                if (isset($_POST['login'])) {
+
+                    if ($user && password_verify($password, $user['password'])) {
+                        // Start session and store user data
+                        session_start();
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['username'] = $user['username'];
+            
+                        return true;
+                    }
+            
+                    return false;
+          
+                }
+              } catch (Exception $error) {
+                echo $error;
+              }
     
-            if ($user && password_verify($password, $user['password'])) {
-                // Start session and store user data
-                session_start();
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-    
-                return true;
-            }
-    
-            return false;
+            
         }
     
         public function logout()
@@ -41,15 +54,28 @@
             // Check if the user is authenticated
             return isset($_SESSION['user_id']);
         }
+        public function register()
+        {
+            // Check if the user is authenticated
+            // return isset($_SESSION['user_id']);
+        }
+        public function indexView()
+        {
+        
+          include('./views/homeView.php');
+        }
         public function mvcHandler()
         {
-            $playerRounter = isset($_GET['auth']) ? $_GET['authRoute'] : NULL;
-            switch ($playerRounter) {
-            case 'login':
-                $this->insert();
+            $authRouter = isset($_GET['authRoute']) ? $_GET['authRoute'] : NULL;
+            switch ($authRouter) {
+            case 'loginPage':
+                $this->pageRedirect("./views/login.php");
                 break;
-            case 'register':
-                $this->update();
+            case 'login':
+                $this->login();
+                break;
+            case 'registerPage':
+                $this->pageRedirect("./views/registerView.php");
                 break;
             case 'logout':
                 break;
